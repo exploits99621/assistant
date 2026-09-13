@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Zoya · Voice AI</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- PERMISSION SCREEN -->
+    <div class="permission-screen" id="permissionScreen">
+        <div class="permission-card">
+            <div class="logo-badge">
+                <div class="logo-orb"></div>
+            </div>
+            <h1 class="brand">Zoya</h1>
+            <p class="tagline">Your sassy AI companion. Always ready to talk.</p>
+
+            <div class="perm-list">
+                <div class="perm-item">
+                    <div class="perm-icon">🎤</div>
+                    <div>
+                        <h3>Microphone</h3>
+                        <p>So I can hear that gorgeous voice.</p>
+                    </div>
+                </div>
+                <div class="perm-item">
+                    <div class="perm-icon">🔊</div>
+                    <div>
+                        <h3>Speaker</h3>
+                        <p>Because you deserve to hear me clearly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" id="startBtn">
+                <span>Wake Zoya Up</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <p class="disclaimer">Powered by OpenRouter · Real-time voice AI</p>
+        </div>
+    </div>
+
+    <!-- MAIN UI -->
+    <div class="app hidden" id="app">
+
+        <div class="top-bar">
+            <div class="brand-mini">
+                <span class="dot"></span>
+                <span>Zoya</span>
+            </div>
+            <div class="status-pill" id="statusPill">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Idle</span>
+            </div>
+        </div>
+
+        <div class="orb-stage">
+            <canvas id="orbCanvas"></canvas>
+            <div class="orb-halo" id="orbHalo"></div>
+            <div class="orb-core" id="orbCore">
+                <div class="mic-icon" id="micIcon">
+                    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="caption-stage">
+            <p class="caption" id="caption">Tap the orb and start talking. I'm all ears. 💋</p>
+        </div>
+
+        <div class="bottom-bar">
+            <button class="btn-icon" id="muteBtn" title="Mute">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="23"/>
+                </svg>
+            </button>
+
+            <button class="btn-icon btn-end" id="endBtn" title="End">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"/>
+                    <line x1="23" y1="1" x2="1" y2="23"/>
+                </svg>
+            </button>
+
+            <button class="btn-icon" id="settingsBtn" title="Settings">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal hidden" id="settingsModal">
+            <div class="modal-card">
+                <h2>Settings</h2>
+                <label>OpenRouter API Key</label>
+                <input type="password" id="apiKeyInput" placeholder="sk-or-v1-..." />
+                <label>Voice</label>
+                <select id="voiceSelect">
+                    <option value="en-IN">English (India)</option>
+                    <option value="en-US">English (US)</option>
+                    <option value="en-GB">English (UK)</option>
+                </select>
+                <label>Reply Speed</label>
+                <select id="rateSelect">
+                    <option value="0.9">Slow</option>
+                    <option value="1.0" selected>Normal</option>
+                    <option value="1.15">Fast</option>
+                </select>
+                <div class="modal-actions">
+                    <button class="btn-ghost" id="closeSettings">Close</button>
+                    <button class="btn-primary" id="saveSettings">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
